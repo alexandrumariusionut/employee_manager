@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}Adaugă Angajat{% endblock %}
+
+{% block content %}
+<h1>Adaugă angajat</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <p>{{ form.nume.label }}<br>{{ form.nume(size=40) }}</p>
+    <p>{{ form.prenume.label }}<br>{{ form.prenume(size=40) }}</p>
+    <p>{{ form.cnp.label }}<br>{{ form.cnp(size=40) }}</p>
+    <p>{{ form.varsta.label }}<br>{{ form.varsta() }}</p>
+    <p>{{ form.departament.label }}<br>{{ form.departament(size=40) }}</p>
+    <p>{{ form.functie.label }}<br>{{ form.functie(size=40) }}</p>
+    <p>{{ form.salariu_brt.label }}<br>{{ form.salariu_brt() }}</p>
+    <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}
