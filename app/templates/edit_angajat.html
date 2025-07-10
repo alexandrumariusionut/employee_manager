@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block title %}Editare Angajat{% endblock %}
+
+{% block content %}
+<h1>Editează angajat: {{ cnp }}</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <p>{{ form.nume.label }}<br>{{ form.nume(size=40) }}</p>
+    <p>{{ form.prenume.label }}<br>{{ form.prenume(size=40) }}</p>
+    <p>{{ form.varsta.label }}<br>{{ form.varsta() }}</p>
+    <p>{{ form.departament.label }}<br>{{ form.departament(size=40) }}</p>
+    <p>{{ form.functie.label }}<br>{{ form.functie(size=40) }}</p>
+    <p>{{ form.salariu_brt.label }}<br>{{ form.salariu_brt() }}</p>
+    <p>{{ form.submit(label='Salvează modificările') }}</p>
+</form>
+{% endblock %}

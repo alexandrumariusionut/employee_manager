@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}Detalii Angajat{% endblock %}
+
+{% block content %}
+<h1>Detalii angajat</h1>
+<ul>
+    <li><strong>Nume:</strong> {{ angajat.nume }} {{ angajat.prenume }}</li>
+    <li><strong>CNP:</strong> {{ angajat.cnp }}</li>
+    <li><strong>Vârstă:</strong> {{ angajat.varsta }}</li>
+    <li><strong>Departament:</strong> {{ angajat.departament }}</li>
+    <li><strong>Funcție:</strong> {{ angajat.functie }}</li>
+    <li><strong>Data angajării:</strong> {{ angajat.data_angajare }}</li>
+    <li><strong>Salariu brut:</strong> {{ angajat.salariu_brt }} RON</li>
+</ul>
+{% endblock %}

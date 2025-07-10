@@ -1,0 +1,35 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Angajați</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+
+
+
+
+<h1>Angajați sortați după: {{ criteriu }}</h1>
+
+<p>
+    Sortează după:
+    <a href="{{ url_for('main.angajati_sortati', criteriu='nume') }}">Nume</a> |
+    <a href="{{ url_for('main.angajati_sortati', criteriu='data') }}">Senioritate</a> |
+    <a href="{{ url_for('main.angajati_sortati', criteriu='departament') }}">Departament</a>
+</p>
+
+<ul>
+{% for angajat in angajati %}
+    <li>
+        {{ angajat.nume }} {{ angajat.prenume }} – {{ angajat.functie }} ({{ angajat.departament }})
+        [<a href="{{ url_for('main.editeaza_angajat', cnp=angajat.cnp) }}">Editează</a>]
+        [<a href="{{ url_for('main.fluturas_salarial', cnp=angajat.cnp) }}">Fluturaș</a>]
+        <form method="POST" action="{{ url_for('main.sterge_angajat', cnp=angajat.cnp) }}" style="display:inline;">
+            <button type="submit" onclick="return confirm('Ești sigur că vrei să ștergi acest angajat?')">Șterge</button>
+        </form>
+    </li>
+{% else %}
+    <li>Nu sunt angajați în baza de date.</li>
+{% endfor %}
+</ul>
+
+<a href="{{ url_for('main.home') }}">Înapoi acasă</a>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Aplicație Angajați{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="{{ url_for('main.home') }}">Acasă</a>
+            <a href="{{ url_for('main.lista_angajati') }}">Angajați</a>
+            <a href="{{ url_for('main.adauga_angajat') }}">Adaugă</a>
+            <a href="{{ url_for('main.salarii_total') }}">Salarii</a>
+            <a href="{{ url_for('main.export_csv') }}">Export</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

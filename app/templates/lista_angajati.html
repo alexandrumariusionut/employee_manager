@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}Lista Angajaților{% endblock %}
+
+{% block content %}
+<h1>Lista Angajaților</h1>
+<p><a href="{{ url_for('main.export_csv') }}"><button>Exportă raport CSV</button></a></p>
+
+<form method="GET" action="{{ url_for('main.cauta_angajat') }}">
+    <label for="cnp">Caută după CNP:</label>
+    <input type="text" name="cnp" maxlength="13" required>
+    <button type="submit">Caută</button>
+</form>
+
+<ul>
+{% for angajat in angajati %}
+    <li>
+        <strong>{{ angajat.nume }} {{ angajat.prenume }}</strong> – {{ angajat.functie }} ({{ angajat.departament }})<br>
+        CNP: {{ angajat.cnp }}
+        <div class="actions">
+            <a href="{{ url_for('main.editeaza_angajat', cnp=angajat.cnp) }}">Editează</a>
+            <a href="{{ url_for('main.fluturas_salarial', cnp=angajat.cnp) }}">Fluturaș</a>
+            <form method="POST" action="{{ url_for('main.sterge_angajat', cnp=angajat.cnp) }}" class="inline-form">
+                <button type="submit" onclick="return confirm('Ești sigur că vrei să ștergi acest angajat?')">Șterge</button>
+            </form>
+        </div>
+    </li>
+{% else %}
+    <li>Nu există angajați în baza de date.</li>
+{% endfor %}
+</ul>
+{% endblock %}

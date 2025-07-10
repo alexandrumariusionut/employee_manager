@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}Fluturaș Salarial{% endblock %}
+
+{% block content %}
+<h1>Fluturaș salarial</h1>
+<p><strong>Nume:</strong> {{ angajat.nume }} {{ angajat.prenume }}</p>
+<p><strong>CNP:</strong> {{ angajat.cnp }}</p>
+<p><strong>Salariu brut:</strong> {{ angajat.salariu_brt }} RON</p>
+<hr>
+<p>CAS (10%): {{ cas }} RON</p>
+<p>CASS (25%): {{ cass }} RON</p>
+<p>Impozit (10%): {{ impozit }} RON</p>
+<hr>
+<p><strong>Salariu net:</strong> {{ net }} RON</p>
+{% endblock %}
