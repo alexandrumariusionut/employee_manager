@@ -1,4 +1,3 @@
-# app/routes.py
 from flask import Blueprint, render_template, redirect, url_for, flash
 from app import db
 from app.models import Angajat
@@ -8,13 +7,16 @@ import csv
 from io import StringIO
 from flask import Response
 
-
+# Inițializăm blueprint-ul pentru gestionarea rutelor
 main = Blueprint("main", __name__)
 
+# Ruta principală – afișează pagina de start (home)
 @main.route("/")
 def home():
     return render_template("home.html")
 
+
+# Ruta pentru adăugarea unui nou angajat (GET pentru formular, POST pentru trimiterea lui)
 @main.route("/adauga", methods=["GET", "POST"])
 def adauga_angajat():
     form = AngajatForm()
@@ -35,12 +37,15 @@ def adauga_angajat():
         return redirect(url_for("main.home"))
     return render_template("add.html", form=form)
 
+
+# Ruta care afișează toți angajații din baza de date
 @main.route("/angajati")
 def lista_angajati():
     angajati = Angajat.query.all()
     return render_template("lista_angajati.html", angajati=angajati)
 
 
+# Ruta care caută un angajat după CNP (primit prin query string)
 @main.route("/cauta")
 def cauta_angajat():
     from flask import request
@@ -52,6 +57,7 @@ def cauta_angajat():
     return render_template("angajat_detalii.html", angajat=angajat)
 
 
+# Ruta pentru editarea unui angajat existent (identificat prin CNP)
 @main.route("/editeaza/<cnp>", methods=["GET", "POST"])
 def editeaza_angajat(cnp):
     angajat = Angajat.query.filter_by(cnp=cnp).first_or_404()
@@ -72,7 +78,7 @@ def editeaza_angajat(cnp):
     return render_template("edit_angajat.html", form=form, cnp=cnp)
 
 
-
+# Ruta pentru ștergerea unui angajat (prin metoda POST)
 @main.route("/sterge/<cnp>", methods=["POST"])
 def sterge_angajat(cnp):
     angajat = Angajat.query.filter_by(cnp=cnp).first_or_404()
@@ -82,18 +88,15 @@ def sterge_angajat(cnp):
     return redirect(url_for("main.lista_angajati"))
 
 
+# Ruta care calculează suma salariilor brute pentru toți angajații
 @main.route("/salarii_total")
 def salarii_total():
     total = db.session.query(db.func.sum(Angajat.salariu_brt)).scalar() or 0
     return render_template("salarii_total.html", total=total)
 
 
-@main.route("/salarii_departament/<nume>")
-def salarii_departament(nume):
-    total = db.session.query(db.func.sum(Angajat.salariu_brt)).filter_by(departament=nume).scalar() or 0
-    return render_template("salarii_departament.html", total=total, departament=nume)
 
-
+# Ruta care generează fluturașul salarial pentru un angajat după CNP
 @main.route("/fluturas/<cnp>")
 def fluturas_salarial(cnp):
     angajat = Angajat.query.filter_by(cnp=cnp).first_or_404()
@@ -106,29 +109,14 @@ def fluturas_salarial(cnp):
     return render_template("fluturas.html", angajat=angajat, cas=cas, cass=cass, impozit=impozit, net=net)
 
 
-@main.route("/angajati_sortati")
-def angajati_sortati():
-    from flask import request
-    criteriu = request.args.get("criteriu", "nume")
-
-    if criteriu == "nume":
-        angajati = Angajat.query.order_by(Angajat.nume.asc()).all()
-    elif criteriu == "data":
-        angajati = Angajat.query.order_by(Angajat.data_angajare.asc()).all()
-    elif criteriu == "departament":
-        angajati = Angajat.query.order_by(Angajat.departament.asc()).all()
-    else:
-        angajati = Angajat.query.all()
-
-    return render_template("lista_angajati_sortati.html", angajati=angajati, criteriu=criteriu)
 
 
-
-
+# Ruta care exportă datele tuturor angajaților într-un fișier CSV (inclusiv salariul net calculat)
 @main.route("/export_csv")
 def export_csv():
     angajati = Angajat.query.all()
 
+    # Funcție internă care calculează salariul net pe baza brutului
     def calculeaza_net(brut: float) -> float:
         cas = brut * 0.10
         cass = brut * 0.25
